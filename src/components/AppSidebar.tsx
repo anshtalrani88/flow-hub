@@ -15,9 +15,11 @@ import {
   Settings,
   ChevronLeft,
   LogOut,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { useBranding } from "@/contexts/BrandingContext";
 import FlynLogo from "@/components/FlynLogo";
 
 const navItems = [
@@ -44,6 +46,7 @@ interface AppSidebarProps {
 const AppSidebar = ({ isCollapsed, onToggle }: AppSidebarProps) => {
   const location = useLocation();
   const { logout, user } = useAuth();
+  const { branding } = useBranding();
 
   return (
     <motion.aside
@@ -60,8 +63,13 @@ const AppSidebar = ({ isCollapsed, onToggle }: AppSidebarProps) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              className="flex items-center gap-2"
             >
-              <FlynLogo size="md" />
+              {branding.logoUrl ? (
+                <img src={branding.logoUrl} alt={branding.appName} className="h-8 object-contain" />
+              ) : (
+                <FlynLogo size="md" showText={true} customText={branding.logoText} />
+              )}
             </motion.div>
           )}
         </AnimatePresence>
@@ -150,8 +158,25 @@ const AppSidebar = ({ isCollapsed, onToggle }: AppSidebarProps) => {
       {/* Footer */}
       <div className="p-2 border-t border-sidebar-border space-y-1">
         <NavLink
+          to="/settings/white-label"
+          className={cn(
+            "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
+            location.pathname === "/settings/white-label"
+              ? "bg-sidebar-primary text-sidebar-primary-foreground"
+              : "text-sidebar-foreground hover:bg-sidebar-accent"
+          )}
+        >
+          <Sparkles className="h-5 w-5" />
+          {!isCollapsed && <span className="font-medium">White Label</span>}
+        </NavLink>
+        <NavLink
           to="/settings"
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
+          className={cn(
+            "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
+            location.pathname === "/settings"
+              ? "bg-sidebar-primary text-sidebar-primary-foreground"
+              : "text-sidebar-foreground hover:bg-sidebar-accent"
+          )}
         >
           <Settings className="h-5 w-5" />
           {!isCollapsed && <span className="font-medium">Settings</span>}
