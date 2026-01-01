@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useBranding } from "@/contexts/BrandingContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +17,7 @@ const Login = () => {
   const [error, setError] = useState("");
   
   const { login } = useAuth();
+  const { branding } = useBranding();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,7 +49,11 @@ const Login = () => {
           transition={{ duration: 0.6 }}
           className="text-center text-white"
         >
-          <FlynLogo size="lg" className="justify-center mb-8" />
+          {branding.logoUrl ? (
+            <img src={branding.logoUrl} alt={branding.appName} className="h-16 mx-auto mb-8 object-contain" />
+          ) : (
+            <FlynLogo size="lg" className="justify-center mb-8" customText={branding.logoText} />
+          )}
           <h1 className="text-4xl font-bold mb-4">
             Your Business OS
           </h1>
@@ -89,13 +95,17 @@ const Login = () => {
           className="w-full max-w-md"
         >
           <div className="lg:hidden mb-8 flex justify-center">
-            <FlynLogo size="lg" />
+            {branding.logoUrl ? (
+              <img src={branding.logoUrl} alt={branding.appName} className="h-12 object-contain" />
+            ) : (
+              <FlynLogo size="lg" customText={branding.logoText} />
+            )}
           </div>
 
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-foreground">Welcome back</h2>
             <p className="text-muted-foreground mt-2">
-              Sign in to your Flyn workspace
+              Sign in to your {branding.appName} workspace
             </p>
           </div>
 
