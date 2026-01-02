@@ -5,6 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { BrandingProvider } from "@/contexts/BrandingContext";
+import { PlanProvider } from "@/contexts/PlanContext";
+import { UsageProvider } from "@/contexts/UsageContext";
+import { NotificationProvider } from "@/contexts/NotificationContext";
 
 // Pages
 import Index from "./pages/Index";
@@ -56,15 +59,21 @@ const AppRoutes = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <BrandingProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
-        </TooltipProvider>
-      </BrandingProvider>
+      <PlanProvider>
+        <UsageProvider>
+          <NotificationProvider>
+            <BrandingProvider>
+              <TooltipProvider delayDuration={300}>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <AppRoutes />
+                </BrowserRouter>
+              </TooltipProvider>
+            </BrandingProvider>
+          </NotificationProvider>
+        </UsageProvider>
+      </PlanProvider>
     </AuthProvider>
   </QueryClientProvider>
 );
