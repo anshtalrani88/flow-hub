@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
@@ -14,9 +15,14 @@ import {
   MessageSquare,
   Clock,
   Zap,
+  Sparkles,
 } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import { Card, CardContent } from "@/components/ui/card";
+import { usePlan } from "@/contexts/PlanContext";
+import { useUsage } from "@/contexts/UsageContext";
+import { useNotifications } from "@/contexts/NotificationContext";
+import { UsageMeter } from "@/components/UsageMeter";
 
 const statsData = [
   { label: "Active Conversations", value: "128", icon: MessageSquare, trend: "+12%" },
@@ -78,6 +84,18 @@ const quickActions = [
 ];
 
 const Dashboard = () => {
+  const { isSandboxMode, currentPlan } = usePlan();
+  const { notify } = useNotifications();
+  
+  // Trigger welcome notification on first visit
+  useEffect(() => {
+    const hasSeenWelcome = localStorage.getItem("flyn_welcome_shown");
+    if (!hasSeenWelcome) {
+      notify("account.created");
+      localStorage.setItem("flyn_welcome_shown", "true");
+    }
+  }, [notify]);
+
   return (
     <AppLayout>
       <div className="max-w-7xl mx-auto space-y-8">
@@ -90,7 +108,9 @@ const Dashboard = () => {
           <div>
             <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
             <p className="text-muted-foreground mt-1">
-              Welcome back! Here's your business at a glance.
+              {isSandboxMode() 
+                ? "Explore the platform — all actions are simulated." 
+                : "Welcome back! Here's your business at a glance."}
             </p>
           </div>
         </motion.div>
@@ -210,6 +230,26 @@ const Dashboard = () => {
             })}
           </div>
         </motion.div>
+
+        {/* Usage Overview (only for paid plans) */}
+        {!isSandboxMode() && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+          >
+            <h2 className="text-xl font-semibold mb-4">Usage This Month</h2>
+            <Card className="flyn-card border-0">
+              <CardContent className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <UsageMeter metricKey="messages.sent" />
+                  <UsageMeter metricKey="calls.minutes" />
+                  <UsageMeter metricKey="ai.tokens" />
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
 
         {/* Placeholder for NocoBase Dashboard */}
         <motion.div
