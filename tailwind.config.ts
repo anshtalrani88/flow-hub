@@ -14,7 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Satoshi', 'system-ui', 'sans-serif'],
+        display: ['Epilogue', 'system-ui', 'sans-serif'],
+        body: ['Satoshi', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -52,6 +54,7 @@ export default {
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
+          background: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
           primary: "hsl(var(--sidebar-primary))",
           "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
@@ -59,12 +62,14 @@ export default {
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
+          muted: "hsl(var(--sidebar-muted))",
         },
         flyn: {
           purple: "hsl(var(--flyn-purple))",
           "purple-deep": "hsl(var(--flyn-purple-deep))",
           cyan: "hsl(var(--flyn-cyan))",
           "cyan-light": "hsl(var(--flyn-cyan-light))",
+          dark: "hsl(var(--flyn-dark))",
         },
       },
       borderRadius: {

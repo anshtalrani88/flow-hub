@@ -189,7 +189,7 @@ const AppSidebar = ({ isCollapsed, onToggle }: AppSidebarProps) => {
               {group.label && !isCollapsed && (
                 <button
                   onClick={() => toggleGroup(group.label!)}
-                  className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-sidebar-foreground/60 uppercase tracking-wider hover:text-sidebar-foreground transition-colors"
+                  className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-sidebar-muted uppercase tracking-wider hover:text-sidebar-foreground transition-colors"
                 >
                   <span>{group.label}</span>
                   <motion.div
@@ -220,10 +220,10 @@ const AppSidebar = ({ isCollapsed, onToggle }: AppSidebarProps) => {
                       const NavContent = (
                         <div
                           className={cn(
-                            "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-120 group relative",
+                            "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-120 group relative text-sidebar-foreground",
                             isActive && !isLocked
-                              ? "bg-gradient-to-r from-primary/8 to-primary/4 border-l-[3px] border-primary"
-                              : "hover:bg-sidebar-accent",
+                              ? "bg-sidebar-accent border-l-[3px] border-primary text-white"
+                              : "hover:bg-sidebar-accent/60",
                             isLocked && "opacity-60"
                           )}
                         >
@@ -232,14 +232,14 @@ const AppSidebar = ({ isCollapsed, onToggle }: AppSidebarProps) => {
                             !isCollapsed && "group-hover:scale-105"
                           )}>
                             <Icon className={cn(
-                              "h-5 w-5 flex-shrink-0",
+                              "h-5 w-5 flex-shrink-0 text-sidebar-foreground",
                               isActive && !isLocked && "text-primary"
                             )} />
                             
                             {/* Lock overlay on icon */}
                             {isLocked && isCollapsed && (
-                              <div className="absolute -top-1 -right-1 p-0.5 bg-sidebar rounded-full">
-                                <Lock className="h-2.5 w-2.5 text-muted-foreground" />
+                              <div className="absolute -top-1 -right-1 p-0.5 bg-sidebar-background rounded-full">
+                                <Lock className="h-2.5 w-2.5 text-sidebar-muted" />
                               </div>
                             )}
                           </div>
@@ -251,8 +251,8 @@ const AppSidebar = ({ isCollapsed, onToggle }: AppSidebarProps) => {
                                 animate={{ opacity: 1, x: 0, transition: { delay: 0.08 } }}
                                 exit={{ opacity: 0, x: -10 }}
                                 className={cn(
-                                  "font-medium whitespace-nowrap overflow-hidden flex-1",
-                                  isActive && !isLocked && "text-primary font-semibold"
+                                  "font-medium whitespace-nowrap overflow-hidden flex-1 text-sidebar-foreground",
+                                  isActive && !isLocked && "text-white font-semibold"
                                 )}
                               >
                                 {item.label}
@@ -328,11 +328,11 @@ const AppSidebar = ({ isCollapsed, onToggle }: AppSidebarProps) => {
         {!isCollapsed && (
           <div className="px-3 py-2 mb-2 rounded-lg bg-sidebar-accent/50">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-sidebar-foreground/60">Current Plan</span>
+              <span className="text-xs text-sidebar-muted">Current Plan</span>
               <span className="text-xs font-semibold text-primary">{currentPlan}</span>
             </div>
             {isSandboxMode() && (
-              <p className="text-xs text-sidebar-foreground/40 mt-1">
+              <p className="text-xs text-sidebar-muted mt-1">
                 Explore Mode Active
               </p>
             )}
@@ -342,10 +342,10 @@ const AppSidebar = ({ isCollapsed, onToggle }: AppSidebarProps) => {
         <RouterNavLink
           to="/settings/white-label"
           className={cn(
-            "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
+            "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sidebar-foreground",
             location.pathname === "/settings/white-label"
-              ? "bg-gradient-to-r from-primary/8 to-primary/4 border-l-[3px] border-primary"
-              : "text-sidebar-foreground hover:bg-sidebar-accent"
+              ? "bg-sidebar-accent border-l-[3px] border-primary text-white"
+              : "hover:bg-sidebar-accent/60"
           )}
         >
           <Sparkles className="h-5 w-5" />
@@ -355,10 +355,10 @@ const AppSidebar = ({ isCollapsed, onToggle }: AppSidebarProps) => {
         <RouterNavLink
           to="/settings"
           className={cn(
-            "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
+            "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sidebar-foreground",
             location.pathname === "/settings"
-              ? "bg-gradient-to-r from-primary/8 to-primary/4 border-l-[3px] border-primary"
-              : "text-sidebar-foreground hover:bg-sidebar-accent"
+              ? "bg-sidebar-accent border-l-[3px] border-primary text-white"
+              : "hover:bg-sidebar-accent/60"
           )}
         >
           <Settings className="h-5 w-5" />
@@ -375,7 +375,7 @@ const AppSidebar = ({ isCollapsed, onToggle }: AppSidebarProps) => {
 
         {/* Sync status (enterprise feature) */}
         {!isCollapsed && (
-          <div className="px-3 py-2 flex items-center gap-2 text-xs text-sidebar-foreground/40">
+          <div className="px-3 py-2 flex items-center gap-2 text-xs text-sidebar-muted">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span>Last synced 2s ago</span>
           </div>
