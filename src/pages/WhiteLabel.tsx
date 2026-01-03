@@ -19,16 +19,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useBranding, BrandingSettings } from "@/contexts/BrandingContext";
+import { useBranding } from "@/contexts/BrandingContext";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 const colorPresets = [
-  { name: "Flyn Purple", primary: "252 85% 60%", accent: "187 85% 53%" },
-  { name: "Ocean Blue", primary: "210 100% 50%", accent: "180 100% 40%" },
-  { name: "Forest Green", primary: "142 70% 45%", accent: "160 60% 50%" },
-  { name: "Sunset Orange", primary: "25 95% 55%", accent: "45 100% 50%" },
-  { name: "Rose Pink", primary: "340 80% 55%", accent: "320 70% 60%" },
-  { name: "Midnight", primary: "240 50% 50%", accent: "260 60% 55%" },
+  { name: "Flyn Purple", primary: "252 85% 60%", accent: "187 85% 53%", sidebar: "257 75% 10%" },
+  { name: "Ocean Blue", primary: "210 100% 50%", accent: "180 100% 40%", sidebar: "210 60% 12%" },
+  { name: "Forest Green", primary: "142 70% 45%", accent: "160 60% 50%", sidebar: "142 40% 10%" },
+  { name: "Sunset Orange", primary: "25 95% 55%", accent: "45 100% 50%", sidebar: "20 50% 10%" },
+  { name: "Rose Pink", primary: "340 80% 55%", accent: "320 70% 60%", sidebar: "340 40% 10%" },
+  { name: "Midnight", primary: "240 50% 50%", accent: "260 60% 55%", sidebar: "240 40% 8%" },
+  { name: "Coral Reef", primary: "16 85% 60%", accent: "175 70% 45%", sidebar: "16 40% 10%" },
+  { name: "Electric", primary: "270 90% 60%", accent: "50 100% 55%", sidebar: "270 50% 8%" },
+  { name: "Mono Dark", primary: "0 0% 40%", accent: "0 0% 60%", sidebar: "0 0% 6%" },
+  { name: "Emerald", primary: "160 85% 40%", accent: "140 70% 50%", sidebar: "160 50% 8%" },
+  { name: "Crimson", primary: "0 80% 55%", accent: "15 85% 60%", sidebar: "0 50% 8%" },
+  { name: "Royal", primary: "260 80% 55%", accent: "280 70% 60%", sidebar: "260 50% 8%" },
 ];
 
 const fontOptions = [
@@ -77,37 +84,6 @@ const WhiteLabel = () => {
     toast.success("Branding reset to defaults");
   };
 
-  const hslToHex = (hsl: string) => {
-    const [h, s, l] = hsl.split(" ").map((v, i) => 
-      i === 0 ? parseFloat(v) : parseFloat(v.replace("%", ""))
-    );
-    const a = (s / 100) * Math.min(l / 100, 1 - l / 100);
-    const f = (n: number) => {
-      const k = (n + h / 30) % 12;
-      const color = l / 100 - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-      return Math.round(255 * color).toString(16).padStart(2, '0');
-    };
-    return `#${f(0)}${f(8)}${f(4)}`;
-  };
-
-  const hexToHsl = (hex: string): string => {
-    const r = parseInt(hex.slice(1, 3), 16) / 255;
-    const g = parseInt(hex.slice(3, 5), 16) / 255;
-    const b = parseInt(hex.slice(5, 7), 16) / 255;
-    const max = Math.max(r, g, b), min = Math.min(r, g, b);
-    let h = 0, s = 0;
-    const l = (max + min) / 2;
-    if (max !== min) {
-      const d = max - min;
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-      switch (max) {
-        case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
-        case g: h = ((b - r) / d + 2) / 6; break;
-        case b: h = ((r - g) / d + 4) / 6; break;
-      }
-    }
-    return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
-  };
 
   return (
     <AppLayout>
@@ -317,90 +293,53 @@ const WhiteLabel = () => {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Palette className="h-5 w-5" />
-                  Color Presets
+                  Color Themes
                 </CardTitle>
                 <CardDescription>
-                  Choose a preset or customize your own colors
+                  Select a color theme for your branded experience
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mb-6">
-                  {colorPresets.map((preset) => (
-                    <button
-                      key={preset.name}
-                      onClick={() => updateBranding({ 
-                        primaryColor: preset.primary, 
-                        accentColor: preset.accent 
-                      })}
-                      className={`p-3 rounded-lg border-2 transition-all ${
-                        branding.primaryColor === preset.primary 
-                          ? "border-primary ring-2 ring-primary/20" 
-                          : "border-border hover:border-primary/50"
-                      }`}
-                    >
-                      <div 
-                        className="h-8 w-full rounded-md mb-2"
-                        style={{ 
-                          background: `linear-gradient(135deg, hsl(${preset.primary}) 0%, hsl(${preset.accent}) 100%)` 
-                        }}
-                      />
-                      <p className="text-xs font-medium truncate">{preset.name}</p>
-                    </button>
-                  ))}
-                </div>
-
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label>Primary Color</Label>
-                    <div className="flex gap-2">
-                      <input
-                        type="color"
-                        value={hslToHex(branding.primaryColor)}
-                        onChange={(e) => updateBranding({ primaryColor: hexToHsl(e.target.value) })}
-                        className="h-10 w-14 rounded cursor-pointer border-0"
-                      />
-                      <Input 
-                        value={branding.primaryColor}
-                        onChange={(e) => updateBranding({ primaryColor: e.target.value })}
-                        placeholder="252 85% 60%"
-                        className="flex-1"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Accent Color</Label>
-                    <div className="flex gap-2">
-                      <input
-                        type="color"
-                        value={hslToHex(branding.accentColor)}
-                        onChange={(e) => updateBranding({ accentColor: hexToHsl(e.target.value) })}
-                        className="h-10 w-14 rounded cursor-pointer border-0"
-                      />
-                      <Input 
-                        value={branding.accentColor}
-                        onChange={(e) => updateBranding({ accentColor: e.target.value })}
-                        placeholder="187 85% 53%"
-                        className="flex-1"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Sidebar Background</Label>
-                    <div className="flex gap-2">
-                      <input
-                        type="color"
-                        value={hslToHex(branding.sidebarBgColor)}
-                        onChange={(e) => updateBranding({ sidebarBgColor: hexToHsl(e.target.value) })}
-                        className="h-10 w-14 rounded cursor-pointer border-0"
-                      />
-                      <Input 
-                        value={branding.sidebarBgColor}
-                        onChange={(e) => updateBranding({ sidebarBgColor: e.target.value })}
-                        placeholder="257 75% 10%"
-                        className="flex-1"
-                      />
-                    </div>
-                  </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                  {colorPresets.map((preset) => {
+                    const isSelected = branding.primaryColor === preset.primary && 
+                                       branding.accentColor === preset.accent;
+                    return (
+                      <button
+                        key={preset.name}
+                        onClick={() => updateBranding({ 
+                          primaryColor: preset.primary, 
+                          accentColor: preset.accent,
+                          sidebarBgColor: preset.sidebar
+                        })}
+                        className={cn(
+                          "p-3 rounded-xl border-2 transition-all text-left group",
+                          isSelected 
+                            ? "border-primary ring-2 ring-primary/20 bg-primary/5" 
+                            : "border-border hover:border-primary/50 hover:bg-muted/50"
+                        )}
+                      >
+                        <div className="flex gap-1.5 mb-2">
+                          <div 
+                            className="h-8 w-8 rounded-lg shadow-sm"
+                            style={{ background: `hsl(${preset.primary})` }}
+                          />
+                          <div 
+                            className="h-8 w-8 rounded-lg shadow-sm"
+                            style={{ background: `hsl(${preset.accent})` }}
+                          />
+                          <div 
+                            className="h-8 w-8 rounded-lg shadow-sm"
+                            style={{ background: `hsl(${preset.sidebar})` }}
+                          />
+                        </div>
+                        <p className="text-sm font-medium truncate flex items-center gap-1.5">
+                          {isSelected && <Check className="h-3.5 w-3.5 text-primary" />}
+                          {preset.name}
+                        </p>
+                      </button>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
