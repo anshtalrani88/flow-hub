@@ -1,34 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* Flyn Brand Colors - Purple to Cyan gradient theme */
+    /* Flyn Brand Colors - Updated from Brand Guide */
+    /* Primary: #625DFF → HSL(242, 100%, 68%) */
+    /* Secondary/Cyan: #42D3FF → HSL(193, 100%, 63%) */
+    /* Dark Gray: #2B2623 → HSL(20, 8%, 15%) */
+    
     --background: 0 0% 98%;
-    --foreground: 240 10% 10%;
+    --foreground: 20 8% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 10%;
+    --card-foreground: 20 8% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 10%;
+    --popover-foreground: 20 8% 15%;
 
-    /* Primary - Deep Purple */
-    --primary: 252 85% 60%;
+    /* Primary - Brand Purple #625DFF */
+    --primary: 242 100% 68%;
     --primary-foreground: 0 0% 100%;
 
     /* Secondary - Soft Purple */
-    --secondary: 252 40% 96%;
-    --secondary-foreground: 252 85% 45%;
+    --secondary: 242 40% 96%;
+    --secondary-foreground: 242 100% 55%;
 
     --muted: 240 5% 96%;
     --muted-foreground: 240 5% 45%;
 
-    /* Accent - Cyan/Teal */
-    --accent: 187 85% 53%;
+    /* Accent - Brand Cyan #42D3FF */
+    --accent: 193 100% 63%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
@@ -36,68 +38,71 @@
 
     --border: 240 6% 90%;
     --input: 240 6% 90%;
-    --ring: 252 85% 60%;
+    --ring: 242 100% 68%;
 
     --radius: 0.75rem;
 
-    /* Flyn custom tokens */
-    --flyn-purple: 252 85% 60%;
-    --flyn-purple-deep: 257 75% 50%;
-    --flyn-cyan: 187 85% 53%;
-    --flyn-cyan-light: 187 70% 70%;
-    --flyn-gradient: linear-gradient(135deg, hsl(257 75% 50%) 0%, hsl(252 85% 60%) 50%, hsl(187 85% 53%) 100%);
-    --flyn-gradient-subtle: linear-gradient(135deg, hsl(252 85% 60% / 0.1) 0%, hsl(187 85% 53% / 0.05) 100%);
-    --flyn-shadow: 0 4px 20px -4px hsl(252 85% 60% / 0.25);
-    --flyn-shadow-lg: 0 10px 40px -10px hsl(252 85% 60% / 0.35);
+    /* Flyn custom tokens - Updated Brand Colors */
+    --flyn-purple: 242 100% 68%;
+    --flyn-purple-deep: 250 100% 60%;
+    --flyn-cyan: 193 100% 63%;
+    --flyn-cyan-light: 193 80% 75%;
+    --flyn-dark: 20 8% 15%;
+    --flyn-gradient: linear-gradient(135deg, hsl(242 100% 68%) 0%, hsl(220 100% 60%) 50%, hsl(193 100% 63%) 100%);
+    --flyn-gradient-subtle: linear-gradient(135deg, hsl(242 100% 68% / 0.1) 0%, hsl(193 100% 63% / 0.05) 100%);
+    --flyn-shadow: 0 4px 20px -4px hsl(242 100% 68% / 0.25);
+    --flyn-shadow-lg: 0 10px 40px -10px hsl(242 100% 68% / 0.35);
 
-    /* Sidebar */
-    --sidebar-background: 257 75% 10%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 252 85% 60%;
+    /* Sidebar - Dark theme with light text */
+    --sidebar-background: 20 8% 15%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 242 100% 68%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 252 50% 20%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 252 30% 20%;
-    --sidebar-ring: 252 85% 60%;
+    --sidebar-accent: 242 30% 25%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 0 0% 22%;
+    --sidebar-ring: 242 100% 68%;
+    --sidebar-muted: 0 0% 70%;
   }
 
-  .dark {
-    --background: 240 10% 6%;
-    --foreground: 0 0% 95%;
+.dark {
+    --background: 20 8% 8%;
+    --foreground: 0 0% 98%;
 
-    --card: 240 10% 10%;
-    --card-foreground: 0 0% 95%;
+    --card: 20 8% 12%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 240 10% 10%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 20 8% 12%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 252 85% 65%;
+    --primary: 242 100% 72%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 252 30% 18%;
-    --secondary-foreground: 252 70% 80%;
+    --secondary: 242 30% 18%;
+    --secondary-foreground: 242 70% 80%;
 
-    --muted: 240 10% 15%;
-    --muted-foreground: 240 5% 60%;
+    --muted: 20 8% 18%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 187 85% 45%;
+    --accent: 193 100% 55%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 70% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 10% 18%;
-    --input: 240 10% 18%;
-    --ring: 252 85% 65%;
+    --border: 20 8% 20%;
+    --input: 20 8% 20%;
+    --ring: 242 100% 72%;
 
-    --sidebar-background: 240 10% 5%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 252 85% 65%;
+    --sidebar-background: 20 8% 8%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 242 100% 72%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 252 30% 15%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 240 10% 15%;
-    --sidebar-ring: 252 85% 65%;
+    --sidebar-accent: 242 30% 20%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 20 8% 18%;
+    --sidebar-ring: 242 100% 72%;
+    --sidebar-muted: 0 0% 60%;
   }
 }
 
@@ -107,8 +112,12 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Satoshi', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Epilogue', system-ui, sans-serif;
   }
 }
 
